@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "756239267894",
+    "project_id": "management-app-b5aa4",
+    "storage_bucket": "management-app-b5aa4.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:756239267894:android:e93881324fc44bc5884097",
+        "android_client_info": {
+          "package_name": "com.example.management_app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBc0Wp16_bRvnxGp9PD17Un_eUZQ0mS5Hc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
