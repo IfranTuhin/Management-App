@@ -2,7 +2,7 @@ import 'dart:developer';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:management_app/FirebaseDatabase/firebase_database_provider.dart';
+import 'package:management_app/FirebaseDatabase/firebase_database_operation.dart';
 import 'package:management_app/Widget/custom_button.dart';
 import 'package:management_app/Widget/input_text_field.dart';
 import 'package:provider/provider.dart';
@@ -21,6 +21,10 @@ class _MemberOfPadmaDataInputState extends State<MemberOfPadmaDataInput> {
   TextEditingController studentDeptController = TextEditingController();
   TextEditingController studentBatchController = TextEditingController();
   TextEditingController studentNumberController = TextEditingController();
+
+  //
+  FirebaseDatabaseOperation firebaseDatabaseOperation =
+      FirebaseDatabaseOperation();
 
   @override
   Widget build(BuildContext context) {
@@ -72,27 +76,28 @@ class _MemberOfPadmaDataInputState extends State<MemberOfPadmaDataInput> {
                   String studentDept = studentDeptController.text;
                   String studentBatch = studentBatchController.text;
                   String studentNumber = studentNumberController.text;
-                  //
-                  if(seriesName != "" && studentName != "" && studentDept != "" && studentBatch != "" && studentNumber != ""){
-                    Map<String, dynamic> studentMap = {
-                      "name": studentName,
-                      "dept": studentDept,
-                      "batch": studentBatch,
-                      "number": studentNumber,
-                    };
-                    FirebaseFirestore firebaseFirestore = FirebaseFirestore.instance;
-                    firebaseFirestore
-                        .collection("Member of PADMA")
-                        .doc(seriesName)
-                        .collection(studentName)
-                        .doc("Student Details")
-                        .set(studentMap);
-                    log('User data added!');
-                  }
-                  else{
+
+                  if (seriesName != "" &&
+                      studentName != "" &&
+                      studentDept != "" &&
+                      studentBatch != "" &&
+                      studentNumber != "") {
+                    firebaseDatabaseOperation.addData(
+                      seriesName,
+                      studentName,
+                      studentDept,
+                      studentBatch,
+                      studentNumber,
+                    );
+
+                    seriesNameController.clear();
+                    studentNameController.clear();
+                    studentDeptController.clear();
+                    studentBatchController.clear();
+                    studentNumberController.clear();
+                  } else {
                     log("Fill all field");
                   }
-
                 },
                 child: CustomButton(buttonText: "Save Data"),
               ),
