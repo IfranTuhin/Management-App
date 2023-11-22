@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:management_app/Screen/home_screen.dart';
+import 'package:management_app/utils/string_utils.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({Key? key}) : super(key: key);
@@ -21,15 +22,13 @@ class _SplashScreenState extends State<SplashScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Container(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Center(child: Text("Welcome!",style: TextStyle(fontSize: 30,fontWeight: FontWeight.bold,),))
-          ],
-        ),
+    return const Scaffold(
+      body:  Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Center(child: Text(StringUtils.welcomeText,style: TextStyle(fontSize: 30,fontWeight: FontWeight.bold,),))
+        ],
       ),
     );
   }

@@ -1,6 +1,6 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:management_app/FirebaseDatabase/firebase_database_operation.dart';
+import 'package:management_app/FirebaseDatabase/database_provider.dart';
 import 'package:management_app/Screen/splash_screen.dart';
 import 'package:provider/provider.dart';
 
@@ -17,9 +17,12 @@ Future main() async {
     ),
   );
 
-
-
-  runApp(const MyApp());
+  runApp(
+    MultiProvider(
+      providers: [ChangeNotifierProvider(create: (context) => DatabaseProvider(),)],
+      child: const MyApp(),
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {
@@ -30,7 +33,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      title: 'Flutter Demo',
+      title: 'Management App',
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,

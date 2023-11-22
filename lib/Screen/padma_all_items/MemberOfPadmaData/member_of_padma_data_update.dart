@@ -1,4 +1,3 @@
-import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:management_app/FirebaseDatabase/database_provider.dart';
@@ -10,16 +9,29 @@ import 'package:management_app/Widget/input_text_field.dart';
 import 'package:management_app/utils/string_utils.dart';
 import 'package:provider/provider.dart';
 
-class MemberOfPadmaDataInput extends StatefulWidget {
+class MemberOfPadmaDataUpdate extends StatefulWidget {
 
+  StudentModel studentModel;
 
-   const MemberOfPadmaDataInput({Key? key,}) : super(key: key);
+  MemberOfPadmaDataUpdate({Key? key, required this.studentModel}) : super(key: key);
+
 
   @override
-  State<MemberOfPadmaDataInput> createState() => _MemberOfPadmaDataInputState();
+  State<MemberOfPadmaDataUpdate> createState() => _MemberOfPadmaDataUpdateState();
 }
 
-class _MemberOfPadmaDataInputState extends State<MemberOfPadmaDataInput> {
+class _MemberOfPadmaDataUpdateState extends State<MemberOfPadmaDataUpdate> {
+
+  @override
+  void initState() {
+    studentIdController.text = widget.studentModel.id!;
+    studentNameController.text = widget.studentModel.studentName!;
+    studentDeptController.text = widget.studentModel.studentDept!;
+    studentBatchController.text = widget.studentModel.studentBatch!;
+    studentNumberController.text = widget.studentModel.studentNumber!;
+    super.initState();
+  }
+
   // all text editing controller
   TextEditingController studentIdController = TextEditingController();
   TextEditingController studentNameController = TextEditingController();
@@ -37,7 +49,7 @@ class _MemberOfPadmaDataInputState extends State<MemberOfPadmaDataInput> {
       builder: (context, databaseProvider, child) => Scaffold(
         appBar: AppBar(
           title: const Text(
-            StringUtils.addDataInFirebase,
+            StringUtils.updateDataInFirebase,
             style: TextStyle(
               color: Colors.white,
               fontSize: 24,
@@ -52,6 +64,7 @@ class _MemberOfPadmaDataInputState extends State<MemberOfPadmaDataInput> {
               // mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
+
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 15),
                   child: Row(
@@ -76,6 +89,7 @@ class _MemberOfPadmaDataInputState extends State<MemberOfPadmaDataInput> {
                     ],
                   ),
                 ),
+
                 InputTextField(
                   textEditingController: studentIdController,
                   hintText: StringUtils.studentId,
@@ -120,19 +134,20 @@ class _MemberOfPadmaDataInputState extends State<MemberOfPadmaDataInput> {
                       studentNumber: studentNumber,
                     );
 
-                    databaseProvider.addStudentData(studentModel, (int value){
+                    databaseProvider.updateStudentData(studentModel, (int value){
                       if(value == 1){
-                        showSnackBarMessage(context, StringUtils.dataSuccessfullyAdded,isError: false);
-                        Navigator.of(context).pop();
+
+                          showSnackBarMessage(context, StringUtils.dataSuccessfullyAdded,isError: false);
+                          Navigator.of(context).pop();
+
                       }
                       else{
                         showSnackBarMessage(context, StringUtils.failedAddData);
                       }
                     });
 
-
                   },
-                  child: CustomButton(buttonText: StringUtils.saveData),
+                  child: CustomButton(buttonText: StringUtils.updateData),
                 ),
               ],
             ),

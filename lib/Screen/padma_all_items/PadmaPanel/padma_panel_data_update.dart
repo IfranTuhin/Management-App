@@ -1,8 +1,8 @@
-import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:management_app/FirebaseDatabase/database_provider.dart';
 import 'package:management_app/FirebaseDatabase/firebase_database_operation.dart';
+import 'package:management_app/Model/padma_panel_member_model.dart';
 import 'package:management_app/Model/student_model.dart';
 import 'package:management_app/Widget/custom_button.dart';
 import 'package:management_app/Widget/custom_message.dart';
@@ -10,22 +10,35 @@ import 'package:management_app/Widget/input_text_field.dart';
 import 'package:management_app/utils/string_utils.dart';
 import 'package:provider/provider.dart';
 
-class MemberOfPadmaDataInput extends StatefulWidget {
+class PadmaPanelDataUpdate extends StatefulWidget {
 
+  PadmaPanelMemberModel padmaPanelMemberModel;
 
-   const MemberOfPadmaDataInput({Key? key,}) : super(key: key);
+  PadmaPanelDataUpdate({Key? key, required this.padmaPanelMemberModel}) : super(key: key);
+
 
   @override
-  State<MemberOfPadmaDataInput> createState() => _MemberOfPadmaDataInputState();
+  State<PadmaPanelDataUpdate> createState() => _PadmaPanelDataUpdateState();
 }
 
-class _MemberOfPadmaDataInputState extends State<MemberOfPadmaDataInput> {
+class _PadmaPanelDataUpdateState extends State<PadmaPanelDataUpdate> {
+
+  @override
+  void initState() {
+    memberIdController.text = widget.padmaPanelMemberModel.memberId!;
+    memberNameController.text = widget.padmaPanelMemberModel.memberName!;
+    memberDeptController.text = widget.padmaPanelMemberModel.memberDept!;
+    memberPositionController.text = widget.padmaPanelMemberModel.memberPosition!;
+    memberNumberController.text = widget.padmaPanelMemberModel.memberNumber!;
+    super.initState();
+  }
+
   // all text editing controller
-  TextEditingController studentIdController = TextEditingController();
-  TextEditingController studentNameController = TextEditingController();
-  TextEditingController studentDeptController = TextEditingController();
-  TextEditingController studentBatchController = TextEditingController();
-  TextEditingController studentNumberController = TextEditingController();
+  TextEditingController memberIdController = TextEditingController();
+  TextEditingController memberNameController = TextEditingController();
+  TextEditingController memberDeptController = TextEditingController();
+  TextEditingController memberPositionController = TextEditingController();
+  TextEditingController memberNumberController = TextEditingController();
 
   //
   FirebaseDatabaseOperation firebaseDatabaseOperation =
@@ -37,7 +50,7 @@ class _MemberOfPadmaDataInputState extends State<MemberOfPadmaDataInput> {
       builder: (context, databaseProvider, child) => Scaffold(
         appBar: AppBar(
           title: const Text(
-            StringUtils.addDataInFirebase,
+            StringUtils.updateDataInFirebase,
             style: TextStyle(
               color: Colors.white,
               fontSize: 24,
@@ -52,53 +65,55 @@ class _MemberOfPadmaDataInputState extends State<MemberOfPadmaDataInput> {
               // mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
+
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 15),
                   child: Row(
                     children: [
-                      const Expanded(child: Text(StringUtils.selectSeries,style: TextStyle(fontSize: 16),)),
+                      const Expanded(child: Text(StringUtils.selectSession,style: TextStyle(fontSize: 16),)),
                       Expanded(
                         child: DropdownButton(
-                          value: databaseProvider.selectSeries,
+                          value: databaseProvider.selectSession,
                           isExpanded: true,
                           icon: const Icon(Icons.keyboard_arrow_down),
-                          items: databaseProvider.seriesLists.map((String items) {
+                          items: databaseProvider.sessionList.map((String items) {
                             return DropdownMenuItem(
                               value: items,
                               child: Text(items),
                             );
                           }).toList(),
                           onChanged: (String? newValue) {
-                            databaseProvider.changeSeries(newValue!);
+                            databaseProvider.changeSession(newValue!);
                           },
                         ),
-                      )
+                      ),
                     ],
                   ),
                 ),
+
                 InputTextField(
-                  textEditingController: studentIdController,
-                  hintText: StringUtils.studentId,
+                  textEditingController: memberIdController,
+                  hintText: StringUtils.memberId,
                   textInputType: TextInputType.number,
                 ),
                 InputTextField(
-                  textEditingController: studentNameController,
-                  hintText: StringUtils.studentName,
+                  textEditingController: memberNameController,
+                  hintText: StringUtils.memberName,
                   textInputType: TextInputType.text,
                 ),
                 InputTextField(
-                  textEditingController: studentDeptController,
-                  hintText: StringUtils.studentDept,
+                  textEditingController: memberDeptController,
+                  hintText: StringUtils.memberDept,
                   textInputType: TextInputType.text,
                 ),
                 InputTextField(
-                  textEditingController: studentBatchController,
-                  hintText: StringUtils.studentBatch,
+                  textEditingController: memberPositionController,
+                  hintText: StringUtils.memberPosition,
                   textInputType: TextInputType.text,
                 ),
                 InputTextField(
-                  textEditingController: studentNumberController,
-                  hintText: StringUtils.studentNumber,
+                  textEditingController: memberNumberController,
+                  hintText: StringUtils.memberNumber,
                   textInputType: TextInputType.number,
                 ),
 
@@ -106,33 +121,32 @@ class _MemberOfPadmaDataInputState extends State<MemberOfPadmaDataInput> {
                 //Save button
                 databaseProvider.isLoading ? const Center(child: CircularProgressIndicator(),) : InkWell(
                   onTap: () async {
-                    String studentId = studentIdController.text;
-                    String studentName = studentNameController.text;
-                    String studentDept = studentDeptController.text;
-                    String studentBatch = studentBatchController.text;
-                    String studentNumber = studentNumberController.text;
+                    String memberId = memberIdController.text;
+                    String memberName = memberNameController.text;
+                    String memberDept = memberDeptController.text;
+                    String memberPosition = memberPositionController.text;
+                    String memberNumber = memberNumberController.text;
 
-                    StudentModel studentModel = StudentModel(
-                      id: studentId,
-                      studentName: studentName,
-                      studentDept: studentDept,
-                      studentBatch: studentBatch,
-                      studentNumber: studentNumber,
+                    PadmaPanelMemberModel padmaPanelMemberModel = PadmaPanelMemberModel(
+                      memberId: memberId,
+                      memberName: memberName,
+                      memberDept: memberDept,
+                      memberPosition: memberPosition,
+                      memberNumber: memberNumber,
                     );
 
-                    databaseProvider.addStudentData(studentModel, (int value){
+                    databaseProvider.updatePadmaPanelData(padmaPanelMemberModel, (int value){
                       if(value == 1){
-                        showSnackBarMessage(context, StringUtils.dataSuccessfullyAdded,isError: false);
-                        Navigator.of(context).pop();
+                          showSnackBarMessage(context, StringUtils.dataSuccessfullyAdded,isError: false);
+                          Navigator.of(context).pop();
                       }
                       else{
                         showSnackBarMessage(context, StringUtils.failedAddData);
                       }
                     });
 
-
                   },
-                  child: CustomButton(buttonText: StringUtils.saveData),
+                  child: CustomButton(buttonText: StringUtils.updateData),
                 ),
               ],
             ),

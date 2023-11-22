@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:management_app/Model/grid_view_model.dart';
-import 'package:management_app/Screen/padma_all_items/coaching_panel_screen.dart';
+import 'package:management_app/Screen/padma_all_items/CoachingPanel/coaching_panel_screen.dart';
 import 'package:management_app/Screen/padma_all_items/getway_screen.dart';
-import 'package:management_app/Screen/padma_all_items/member_of_padma_screen.dart';
+import 'package:management_app/Screen/padma_all_items/MemberOfPadmaData/member_of_padma_screen.dart';
 import 'package:management_app/Screen/padma_all_items/padma_gallery_screen.dart';
-import 'package:management_app/Screen/padma_all_items/padma_info_screen.dart';
+import 'package:management_app/Screen/padma_all_items/PadmaInfo/padma_info_screen.dart';
 import 'package:management_app/Screen/padma_all_items/padma_notices_screen.dart';
-import 'package:management_app/Screen/padma_all_items/padma_panel_screen.dart';
+import 'package:management_app/Screen/padma_all_items/PadmaPanel/padma_panel_screen.dart';
 import 'package:management_app/Screen/padma_all_items/training_center_screen.dart';
 
 class HomeScreen extends StatefulWidget {
