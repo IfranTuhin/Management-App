@@ -4,6 +4,7 @@ class StringUtils {
   static const String addDataInFirebase = "Add data In Firebase";
   static const String updateDataInFirebase = "Update data In Firebase";
   static const String selectSeries = "Select Series : ";
+  static const String selectedSeries = "Selected Series : ";
   static const String studentId = "Student Id";
   static const String studentName = "Student Name";
   static const String studentDept = "Student Dept";
@@ -41,6 +42,9 @@ class StringUtils {
   static const String contactUs =  "Contact Us";
   static const String aboutPadma =  "About PADMA";
   static const String coachingPanel =  "Coaching Panel";
+  static const String cannotLaunchNumber =  "Cannot launch this number!!";
+  static const String imageSelected =  'Image selected!!';
+  static const String imageNotSelected =  'Image Not selected!!';
 
 
 }

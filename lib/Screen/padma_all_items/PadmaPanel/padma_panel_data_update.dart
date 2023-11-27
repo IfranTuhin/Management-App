@@ -13,8 +13,9 @@ import 'package:provider/provider.dart';
 class PadmaPanelDataUpdate extends StatefulWidget {
 
   PadmaPanelMemberModel padmaPanelMemberModel;
+  final String ? sessionName;
 
-  PadmaPanelDataUpdate({Key? key, required this.padmaPanelMemberModel}) : super(key: key);
+  PadmaPanelDataUpdate({Key? key, required this.padmaPanelMemberModel, this.sessionName}) : super(key: key);
 
 
   @override
@@ -71,22 +72,8 @@ class _PadmaPanelDataUpdateState extends State<PadmaPanelDataUpdate> {
                   child: Row(
                     children: [
                       const Expanded(child: Text(StringUtils.selectSession,style: TextStyle(fontSize: 16),)),
-                      Expanded(
-                        child: DropdownButton(
-                          value: databaseProvider.selectSession,
-                          isExpanded: true,
-                          icon: const Icon(Icons.keyboard_arrow_down),
-                          items: databaseProvider.sessionList.map((String items) {
-                            return DropdownMenuItem(
-                              value: items,
-                              child: Text(items),
-                            );
-                          }).toList(),
-                          onChanged: (String? newValue) {
-                            databaseProvider.changeSession(newValue!);
-                          },
-                        ),
-                      ),
+                      Expanded(child: Text(widget.sessionName!,style: TextStyle(fontSize: 16),)),
+
                     ],
                   ),
                 ),
@@ -135,7 +122,7 @@ class _PadmaPanelDataUpdateState extends State<PadmaPanelDataUpdate> {
                       memberNumber: memberNumber,
                     );
 
-                    databaseProvider.updatePadmaPanelData(padmaPanelMemberModel, (int value){
+                    databaseProvider.updatePadmaPanelData(padmaPanelMemberModel, widget.sessionName!, (int value){
                       if(value == 1){
                           showSnackBarMessage(context, StringUtils.dataSuccessfullyAdded,isError: false);
                           Navigator.of(context).pop();

@@ -67,6 +67,7 @@ class CoachingPanelScreen extends StatelessWidget {
                             onTap: () {
                               Navigator.of(context).push(MaterialPageRoute(
                                 builder: (context) => CoachingPanelMemberName(
+                                  sessionName: sessionName,
                                   id: id,
                                 ),
                               ));

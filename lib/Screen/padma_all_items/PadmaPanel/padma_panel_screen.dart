@@ -68,6 +68,7 @@ class PadmaPanelScreen extends StatelessWidget {
                               Navigator.of(context).push(MaterialPageRoute(
                                 builder: (context) => PadmaPanelMemberNameScreen(
                                   id: id,
+                                  sessionName: sessionName,
                                 ),
                               ));
                             },

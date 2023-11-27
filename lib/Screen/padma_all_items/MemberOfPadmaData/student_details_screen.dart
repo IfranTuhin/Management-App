@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:management_app/Model/student_model.dart';
 import 'package:management_app/Widget/circle_container.dart';
+import 'package:management_app/Widget/custom_message.dart';
 import 'package:management_app/utils/string_utils.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class StudentDetailsScreen extends StatelessWidget {
   StudentModel studentModel;
@@ -43,10 +45,19 @@ class StudentDetailsScreen extends StatelessWidget {
                   color: Colors.blue,
                 ),
                 child: Center(
-                  child: Image.asset(
-                    'assets/icons/man.png',
-                    width: 80,
-                  ),
+                  child: studentModel.imageUrl != null
+                      ? ClipOval(
+                        child: Image.network(
+                        studentModel.imageUrl!,
+                        fit: BoxFit.cover,
+                          height: MediaQuery.of(context).size.height / 6.5,
+                          width: MediaQuery.of(context).size.height / 6.5,
+                        ),
+                      )
+                      : Image.asset(
+                          'assets/icons/man.png',
+                          width: 80,
+                        ),
                 ),
               ),
               const SizedBox(height: 30),
@@ -84,21 +95,46 @@ class StudentDetailsScreen extends StatelessWidget {
               Center(
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-
                   children: [
-                    CircleContainer(
-                      height: 50,
-                      width: 50,
-                      child: const Icon(Icons.phone,size: 30,color: Colors.white,),
+                    InkWell(
+                      onTap: () async {
+                        final Uri url = Uri(
+                          scheme: "tel",
+                          path: "${studentModel.studentNumber}",
+                        );
+                        launchUrl(url);
+                      },
+                      child: CircleContainer(
+                        height: 50,
+                        width: 50,
+                        child: const Icon(
+                          Icons.phone,
+                          size: 30,
+                          color: Colors.white,
+                        ),
+                      ),
                     ),
-                    CircleContainer(
-                      height: 50,
-                      width: 50,
-                      child: const Icon(Icons.email,size: 30,color: Colors.white,),
+                    InkWell(
+                      onTap: () async {
+                        final Uri url = Uri(
+                          scheme: 'sms',
+                          path: "${studentModel.studentNumber}",
+                        );
+                        launchUrl(url);
+                      },
+                      child: CircleContainer(
+                        height: 50,
+                        width: 50,
+                        child: const Icon(
+                          Icons.email,
+                          size: 30,
+                          color: Colors.white,
+                        ),
+                      ),
                     ),
                   ],
                 ),
-              )
+              ),
             ],
           ),
         ),

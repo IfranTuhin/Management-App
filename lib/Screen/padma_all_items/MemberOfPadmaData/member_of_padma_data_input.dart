@@ -1,5 +1,6 @@
-import 'dart:developer';
 
+
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:management_app/FirebaseDatabase/database_provider.dart';
 import 'package:management_app/FirebaseDatabase/firebase_database_operation.dart';
@@ -11,7 +12,6 @@ import 'package:management_app/utils/string_utils.dart';
 import 'package:provider/provider.dart';
 
 class MemberOfPadmaDataInput extends StatefulWidget {
-
 
    const MemberOfPadmaDataInput({Key? key,}) : super(key: key);
 
@@ -26,6 +26,9 @@ class _MemberOfPadmaDataInputState extends State<MemberOfPadmaDataInput> {
   TextEditingController studentDeptController = TextEditingController();
   TextEditingController studentBatchController = TextEditingController();
   TextEditingController studentNumberController = TextEditingController();
+
+  // ToDo: Profile Picture
+
 
   //
   FirebaseDatabaseOperation firebaseDatabaseOperation =
@@ -52,6 +55,19 @@ class _MemberOfPadmaDataInputState extends State<MemberOfPadmaDataInput> {
               // mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
+                const SizedBox(height: 10,),
+                // ToDo: Pic image from gallery
+                CupertinoButton(
+                  onPressed: () async {
+                    databaseProvider.pickImage();
+                  },
+                  padding: EdgeInsets.zero,
+                  child: CircleAvatar(
+                    radius: 50,
+                    backgroundColor: Colors.grey.shade400,
+                    backgroundImage: (databaseProvider.profilePic != null) ? FileImage(databaseProvider.profilePic!) : null,
+                  ),
+                ),
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 15),
                   child: Row(
@@ -118,6 +134,7 @@ class _MemberOfPadmaDataInputState extends State<MemberOfPadmaDataInput> {
                       studentDept: studentDept,
                       studentBatch: studentBatch,
                       studentNumber: studentNumber,
+                      imageUrl: databaseProvider.imageUrl,
                     );
 
                     databaseProvider.addStudentData(studentModel, (int value){

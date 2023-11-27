@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:management_app/Model/coaching_panel_model.dart';
-import 'package:management_app/Model/padma_panel_member_model.dart';
 import 'package:management_app/Widget/circle_container.dart';
 import 'package:management_app/utils/string_utils.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class CoachingPanelMemberDetails extends StatelessWidget {
   CoachingPanelModel coachingPanelModel;
@@ -86,15 +86,41 @@ class CoachingPanelMemberDetails extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
 
                   children: [
-                    CircleContainer(
-                      height: 50,
-                      width: 50,
-                      child: const Icon(Icons.phone,size: 30,color: Colors.white,),
+                    InkWell(
+                      onTap: () async {
+                        final Uri url = Uri(
+                          scheme: "tel",
+                          path: "${coachingPanelModel.memberNumber}",
+                        );
+                        launchUrl(url);
+                      },
+                      child: CircleContainer(
+                        height: 50,
+                        width: 50,
+                        child: const Icon(
+                          Icons.phone,
+                          size: 30,
+                          color: Colors.white,
+                        ),
+                      ),
                     ),
-                    CircleContainer(
-                      height: 50,
-                      width: 50,
-                      child: const Icon(Icons.email,size: 30,color: Colors.white,),
+                    InkWell(
+                      onTap: () async {
+                        final Uri url = Uri(
+                          scheme: 'sms',
+                          path: "${coachingPanelModel.memberNumber}",
+                        );
+                        launchUrl(url);
+                      },
+                      child: CircleContainer(
+                        height: 50,
+                        width: 50,
+                        child: const Icon(
+                          Icons.email,
+                          size: 30,
+                          color: Colors.white,
+                        ),
+                      ),
                     ),
                   ],
                 ),

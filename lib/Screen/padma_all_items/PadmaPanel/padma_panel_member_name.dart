@@ -12,8 +12,9 @@ import 'package:management_app/utils/string_utils.dart';
 
 class PadmaPanelMemberNameScreen extends StatelessWidget {
   final String? id;
+  final String? sessionName;
 
-  PadmaPanelMemberNameScreen({Key? key, this.id}) : super(key: key);
+  PadmaPanelMemberNameScreen({Key? key, this.id, this.sessionName}) : super(key: key);
 
   FirebaseDatabaseOperation firebaseDatabaseOperation =
       FirebaseDatabaseOperation();
@@ -86,6 +87,7 @@ class PadmaPanelMemberNameScreen extends StatelessWidget {
                                         builder: (context) =>
                                         PadmaPanelDataUpdate(
                                         padmaPanelMemberModel: padmaPanelMemberModel,
+                                          sessionName: sessionName,
                                         ),
                                         ));
                                       },

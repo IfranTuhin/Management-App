@@ -1,4 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 
 class StudentModel {
   String? id;
@@ -6,6 +5,7 @@ class StudentModel {
   String? studentDept;
   String? studentBatch;
   String? studentNumber;
+  String? imageUrl;
 
   StudentModel({
     this.id,
@@ -13,6 +13,7 @@ class StudentModel {
     this.studentDept,
     this.studentBatch,
     this.studentNumber,
+    this.imageUrl,
   });
 
   StudentModel.fromJson(Map map) {
@@ -21,6 +22,7 @@ class StudentModel {
     studentDept = map["studentDept"];
     studentBatch = map["studentBatch"];
     studentNumber = map["studentNumber"];
+    imageUrl = map["imageUrl"];
   }
 
   Map<String, dynamic> toJson() {
@@ -30,6 +32,7 @@ class StudentModel {
       "studentDept": studentDept,
       "studentBatch": studentBatch,
       "studentNumber": studentNumber,
+      "imageUrl": imageUrl,
     };
     return map;
   }

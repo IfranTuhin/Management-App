@@ -11,8 +11,9 @@ import 'package:management_app/utils/string_utils.dart';
 
 class StudentNameScreen extends StatelessWidget {
   final int? id;
+  String ? seriesName;
 
-  StudentNameScreen({Key? key, this.id}) : super(key: key);
+  StudentNameScreen({Key? key, this.id, this.seriesName}) : super(key: key);
 
   FirebaseDatabaseOperation firebaseDatabaseOperation =
       FirebaseDatabaseOperation();
@@ -85,6 +86,7 @@ class StudentNameScreen extends StatelessWidget {
                                           builder: (context) =>
                                               MemberOfPadmaDataUpdate(
                                             studentModel: studentModel,
+                                                seriesName: seriesName,
                                           ),
                                         ));
                                       },
