@@ -4,7 +4,8 @@ class InputTextField extends StatelessWidget {
   TextEditingController textEditingController;
   String hintText;
   TextInputType textInputType;
-   InputTextField({Key? key, required this.textEditingController, required this.hintText, required this.textInputType}) : super(key: key);
+  bool? enabled;
+   InputTextField({Key? key, required this.textEditingController, required this.hintText, required this.textInputType, this.enabled}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -16,6 +17,8 @@ class InputTextField extends StatelessWidget {
         decoration: InputDecoration(
           hintText: hintText,
           border: const OutlineInputBorder(),
+          enabled: true,
+
         ),
       ),
     );

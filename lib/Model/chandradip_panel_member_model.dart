@@ -1,4 +1,4 @@
-class CoachingPanelModel {
+class PadmaPanelMemberModel {
   String? memberId;
   String? memberName;
   String? memberPosition;
@@ -6,16 +6,16 @@ class CoachingPanelModel {
   String? memberNumber;
   String? imageUrl;
 
-  CoachingPanelModel({
+  PadmaPanelMemberModel({
     this.memberId,
     this.memberName,
     this.memberPosition,
     this.memberDept,
     this.memberNumber,
-    this.imageUrl,
+    this.imageUrl
   });
 
-  CoachingPanelModel.fromJson(Map map) {
+  PadmaPanelMemberModel.fromJson(Map map) {
     memberId = map["memberId"];
     memberName = map["memberName"];
     memberPosition = map["memberPosition"];

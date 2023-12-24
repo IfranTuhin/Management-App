@@ -36,4 +36,11 @@ class StudentModel {
     };
     return map;
   }
+
+  Map<String, dynamic> toImage() {
+    Map<String, dynamic> map = {
+      "imageUrl": imageUrl,
+    };
+    return map;
+  }
 }

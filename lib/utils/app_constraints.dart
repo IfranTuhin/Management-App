@@ -15,4 +15,14 @@ class AppConstraints{
   static const String coachingData = "Coaching Data";
   static const String coachingSession = "Coaching Session";
 
+  // TODO: this is for firebase parent references Sign up
+  static const String signUpData = "SignUp Data";
+
+
+// TODO: this is for Shared Preferences
+  static const String userId = "user-id";
+  static const String userName = "user-name";
+  static const String userEmail = "user-email";
+  static const String userPassword = "user-password";
+
 }

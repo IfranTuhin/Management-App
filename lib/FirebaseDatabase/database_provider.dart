@@ -5,9 +5,10 @@ import 'package:image_picker/image_picker.dart';
 
 import 'package:management_app/FirebaseDatabase/firebase_database_operation.dart';
 import 'package:management_app/Model/coaching_panel_model.dart';
-import 'package:management_app/Model/padma_panel_member_model.dart';
+import 'package:management_app/Model/chandradip_panel_member_model.dart';
 import 'package:management_app/Model/student_model.dart';
-import 'package:management_app/Widget/custom_message.dart';
+import 'package:management_app/utils/app_constraints.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class DatabaseProvider with ChangeNotifier {
   bool isLoading = false;
@@ -15,6 +16,69 @@ class DatabaseProvider with ChangeNotifier {
   FirebaseDatabaseOperation firebaseDatabaseOperation =
       FirebaseDatabaseOperation();
 
+  // ----------------------------------------------------------------
+  // TODO: Firebase Sign up
+  void createUser(String name, String email, String password, Function callback){
+    isLoading = true;
+    notifyListeners();
+
+    firebaseDatabaseOperation.createUser(name, email, password, (int status){
+
+        isLoading = false;
+        notifyListeners();
+        if(status == 1){
+          callback(1);
+        } else{
+          callback(0);
+        }
+    });
+  }
+
+  // ----------------------------------------------------------------
+  // TODO: Firebase Login
+   login(String email, String password, Function callback, BuildContext context){
+    isLoading = true;
+    notifyListeners();
+
+    firebaseDatabaseOperation.login(email, password, (int status){
+
+      isLoading = false;
+      notifyListeners();
+      if(status == 1){
+        callback(1);
+      } else{
+        callback(0);
+      }
+    }, context);
+  }
+
+  // ----------------------------------------------------------------
+  // TODO: Check Firebase Login
+  bool userLogin = true;
+  Future<bool> isLogin() async{
+    final SharedPreferences sharedPref = await SharedPreferences.getInstance();
+    if(sharedPref.containsKey(AppConstraints.userId) && sharedPref.getString(AppConstraints.userId)!.isNotEmpty){
+      userLogin = true;
+      return Future.value(true);
+    }else{
+      userLogin = false;
+      return Future.value(false);
+    }
+
+  }
+
+  // TODO:  Firebase Logout
+  Future<bool> logout() async{
+    final SharedPreferences sharedPref = await SharedPreferences.getInstance();
+    sharedPref.remove(AppConstraints.userId);
+    sharedPref.remove(AppConstraints.userName);
+    sharedPref.remove(AppConstraints.userEmail);
+    sharedPref.remove(AppConstraints.userPassword);
+    return Future.value(true);
+
+  }
+
+  // ----------------------------------------------------------------
   // TODO: Member of PADMA series list data
   List<String> seriesLists = ['1', '2', '3', '4', '5', '6', '7', '8',
     '9', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20',
@@ -29,6 +93,7 @@ class DatabaseProvider with ChangeNotifier {
     notifyListeners();
   }
 
+  // ----------------------------------------------------------------
   // TODO: Member of PADMA pic image from gallery
   File? profilePic;
   String imageUrl = '';
@@ -48,6 +113,8 @@ class DatabaseProvider with ChangeNotifier {
     notifyListeners();
   }
 
+  // ----------------------------------------------------------------
+
   // TODO: Member of PADMA add student data
 
   addStudentData(StudentModel studentModel, Function callback) {
@@ -64,6 +131,32 @@ class DatabaseProvider with ChangeNotifier {
       }
     });
   }
+
+  // ----------------------------------------------------------------
+
+  // TODO: Member of PADMA add student image update
+  updateImage(String seriesName, String id) async {
+    imageUrl = '';
+
+    final XFile? selectedImage =  await ImagePicker().pickImage(source: ImageSource.gallery);
+    if(selectedImage != null) {
+      profilePic =  File(selectedImage.path);
+
+      firebaseDatabaseOperation.uploadImage(profilePic!).then((value) {
+        imageUrl = value;
+        notifyListeners();
+
+        StudentModel studentModel = StudentModel(id: id, imageUrl: imageUrl);
+        firebaseDatabaseOperation.updateStudentImage(studentModel, seriesName, (int value) {
+          isLoading = false;
+          notifyListeners();
+        });
+      });
+    }
+    notifyListeners();
+  }
+
+  //----------------------------------------------------------------
 
   // TODO: Member of PADMA update student data
 
@@ -83,7 +176,7 @@ class DatabaseProvider with ChangeNotifier {
     });
   }
 
-  //
+  // ----------------------------------------------------------------
 
   // TODO: PADMA  Panel session list data
 
@@ -121,6 +214,8 @@ class DatabaseProvider with ChangeNotifier {
     notifyListeners();
   }
 
+  // ----------------------------------------------------------------
+
 // TODO: add padma panel member data
   addPadmaPanelMemberData(
       PadmaPanelMemberModel padmaPanelMemberModel, Function callback) {
@@ -138,6 +233,33 @@ class DatabaseProvider with ChangeNotifier {
     });
   }
 
+  // ----------------------------------------------------------------
+
+  // TODO: Update padma panel member image
+
+  padmaPanelUpdateImage(String seriesName, String id) async {
+    imageUrl = '';
+
+    final XFile? selectedImage =  await ImagePicker().pickImage(source: ImageSource.gallery);
+    if(selectedImage != null) {
+      profilePic =  File(selectedImage.path);
+
+      firebaseDatabaseOperation.uploadImage(profilePic!).then((value) {
+        imageUrl = value;
+        notifyListeners();
+
+        PadmaPanelMemberModel padmaPanelMemberModel = PadmaPanelMemberModel(memberId: id, imageUrl: imageUrl);
+        firebaseDatabaseOperation.padmaPanelMemberUpdateImage(padmaPanelMemberModel, seriesName, (int value) {
+          isLoading = false;
+          notifyListeners();
+        });
+      });
+    }
+    notifyListeners();
+  }
+
+  // ----------------------------------------------------------------
+
   // TODO: Update padma panel member data
   updatePadmaPanelData(PadmaPanelMemberModel padmaPanelMemberModel,
       String sessionName, Function callback) {
@@ -154,6 +276,8 @@ class DatabaseProvider with ChangeNotifier {
       }
     });
   }
+
+  // ----------------------------------------------------------------
 
   // TODO: Coaching  Panel session list data
   List<String> coachingSessionList = [
@@ -185,6 +309,8 @@ class DatabaseProvider with ChangeNotifier {
     notifyListeners();
   }
 
+  // ----------------------------------------------------------------
+
   // TODO: add Coaching panel member data
   addCoachingPanelMemberData(
       CoachingPanelModel coachingPanelModel, Function callback) {
@@ -202,7 +328,34 @@ class DatabaseProvider with ChangeNotifier {
     });
   }
 
-  // TODO: add Coaching panel member data Update
+  // ----------------------------------------------------------------
+
+  // TODO: Update padma panel member image
+
+  updateCoachingPanelMemberImage(String seriesName, String id) async {
+    imageUrl = '';
+
+    final XFile? selectedImage =  await ImagePicker().pickImage(source: ImageSource.gallery);
+    if(selectedImage != null) {
+      profilePic =  File(selectedImage.path);
+
+      firebaseDatabaseOperation.uploadImage(profilePic!).then((value) {
+        imageUrl = value;
+        notifyListeners();
+
+        CoachingPanelModel coachingPanelModel = CoachingPanelModel(memberId: id, imageUrl: imageUrl);
+        firebaseDatabaseOperation.coachingPanelMemberImageUpdate(coachingPanelModel, seriesName, (int value) {
+          isLoading = false;
+          notifyListeners();
+        });
+      });
+    }
+    notifyListeners();
+  }
+
+  // ----------------------------------------------------------------
+
+  // TODO: Coaching panel member data Update
   updateCoachingPanelMemberData(
       CoachingPanelModel coachingPanelModel, sessionName, Function callback) {
     isLoading = true;
@@ -219,24 +372,6 @@ class DatabaseProvider with ChangeNotifier {
     });
   }
 
-  //
-  //
-  // File? selectedImage;
-  // String imageUrl = '';
-  //
-  // void pickImage() async {
-  //   imageUrl = '';
-  //   final ImagePicker picker = ImagePicker();
-  //
-  //   final XFile? image = await picker.pickImage(source: ImageSource.gallery);
-  //   if (image != null) {
-  //     selectedImage = File(image.path);
-  //
-  //     selectedImage.uploadImage(selectedImage!).then((value) {
-  //       imageUrl = value;
-  //       notifyListeners();
-  //     });
-  //   }
-  //   notifyListeners();
-  // }
+// ----------------------------------------------------------------
+
 }
